@@ -1,4 +1,5 @@
-import "@/styles.css";
+// import "@/styles.css";
+import "@/components/Navbar.css";
 
 const Navbar = () => {
   const toggleNavSearch = () => {
