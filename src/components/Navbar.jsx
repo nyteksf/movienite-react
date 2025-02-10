@@ -1,18 +1,57 @@
-// import "@/styles.css";
-import "@/components/Navbar.css";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCompass } from "@fortawesome/free-solid-svg-icons";
 
-const Navbar = () => {
-  const toggleNavSearch = () => {
-    console.log("A");
+import { Bars, Compass, Search, XMark } from "@/components/Icons";
+import { cn } from "@/lib/utils";
+import "@/components/navbar.css";
+
+const Navbar = ({
+  variant = "default",
+  isModalOpen,
+  setIsModalOpen,
+  setIsModalAnimating,
+}) => {
+  const [value, setValue] = useState("");
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [searchIsOpen, setSearchIsOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const openModal = () => {
+    setTimeout(() => {
+      setIsModalAnimating(true);
+    }, 50);
+    setIsModalOpen(true);
   };
 
-  const setNavDiscover = () => {
-    console.log("B");
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (value.trim() !== "") {
+      if (location.pathname.includes("/discover/search/")) {
+        navigate(`/discover/search/${encodeURIComponent(value)}`, {
+          replace: true,
+        });
+      } else {
+        navigate(`/discover/search/${encodeURIComponent(value)}`);
+      }
+      setValue("");
+      setSearchIsOpen(false);
+    }
   };
 
-  const toggleModal = () => {
-    console.log("C");
-  };
+  const toggleNavSearch = () => setSearchIsOpen((prev) => !prev);
 
   const openNavMenu = () => {
     console.log("D");
@@ -24,20 +63,53 @@ const Navbar = () => {
 
   return (
     <header>
-      <nav>
-        <img
-          className="nav__logo"
-          src="./movienitelogo.png"
-          alt="Navbar logo"
-        />
+      <nav
+        className={`${isScrolled ? "nav--scroll" : ""} ${
+          isModalOpen ? "navbar-hidden" : ""
+        }`}
+      >
+        {variant !== "default" ? (
+          <div className="nav-logo-wrapper" onClick={() => navigate("/")}>
+            <img
+              className={cn(
+                "nav__logo",
+                variant === "viewallpage" &&
+                  isScrolled &&
+                  "invertLogoColorLight",
+                variant === "viewallpage" &&
+                  !isScrolled &&
+                  "invertLogoColorDark"
+              )}
+              src="/movienitelogo.png"
+              alt="Navbar logo"
+            />
+          </div>
+        ) : (
+          <img
+            className={cn(
+              "nav__logo cursor-default",
+              variant === "viewallpage" && isScrolled && "invertLogoColorLight",
+              variant === "viewallpage" && !isScrolled && "invertLogoColorDark"
+            )}
+            src="/movienitelogo.png"
+            alt="Navbar logo"
+          />
+        )}
+
         <div className="xmark--close-nav-search">
-          <i
+          <XMark
             onClick={toggleNavSearch}
-            className="fa-solid fa-xmark xmark--close-nav-search"
-          ></i>
+            className="xmark--close-nav-search"
+          />
         </div>
+
         <div className="nav__list--container">
-          <ul className="nav__list">
+          <ul
+            className={cn(
+              "nav__list",
+              variant === "viewallpage" && "hide-nav-links"
+            )}
+          >
             <li className="nav__list--item">
               <a className="nav__link" href="#latest">
                 Latest Movies
@@ -56,12 +128,11 @@ const Navbar = () => {
             <li className="nav__list--item">
               <a
                 className="nav__link"
-                href="javascript:void(0);"
                 value="all"
-                onClick={(event) => {
-                  setNavDiscover(event);
-                }}
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate("/discover")}
               >
+                <FontAwesomeIcon className="discover-icon" icon={faCompass} />
                 Discover
               </a>
             </li>
@@ -72,13 +143,16 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
+
         <div className="nav__right">
           <ul className="nav__right--list">
-            <form action="/viewallmovies.html" method="get">
+            <form onSubmit={handleSearch}>
               <div className="nav__input--wrapper">
                 <input
                   className="nav__search--input"
                   type="text"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
                   name="query"
                   placeholder="Type and Press Enter To Search"
                 />
@@ -90,22 +164,36 @@ const Navbar = () => {
                 href="#"
                 onClick={toggleNavSearch}
               >
-                <i className="fa-solid fa-magnifying-glass"></i>
+                <strong>
+                  <Search
+                    className={cn(
+                      "fa-magnifying-glass",
+                      variant === "viewallpage" &&
+                        isScrolled &&
+                        "makeMagLensLight",
+                      variant === "viewallpage" &&
+                        !isScrolled &&
+                        "makeMagLensDark"
+                    )}
+                  />
+                </strong>
               </a>
             </li>
             <li className="nav__right--list-item">
-              <button className="nav__right--btn" onClick={toggleModal}>
-                CONTACT ME
+              <button className="nav__right--btn" onClick={openModal}>
+                {isModalOpen ? "THANKS" : "CONTACT ME"}
               </button>
             </li>
           </ul>
         </div>
+
         <button className="btn__menu" onClick={openNavMenu}>
-          <i className="fa-solid fa-bars"></i>
+          <Bars />
         </button>
+
         <div className="menu__backdrop">
           <button className="btn__menu btn__menu--close" onClick={closeNavMenu}>
-            <i className="fa-solid fa-xmark xmark--navmenu-close"></i>
+            <XMark className="xmark--navmenu-close" />
           </button>
           <ul className="menu__links">
             <li className="menu__list-item" onClick={closeNavMenu}>
@@ -124,9 +212,12 @@ const Navbar = () => {
               </a>
             </li>
             <li className="menu__list-item" onClick={closeNavMenu}>
-              <a className="menu__link" href="./viewallmovies.html?all#dr3am">
-                <i className="fa-regular fa-compass"></i> Discover
-              </a>
+              <button
+                className="menu__link"
+                onClick={() => navigate("/discover")}
+              >
+                <Compass /> Discover
+              </button>
             </li>
             <li className="menu__list-item" onClick={closeNavMenu}>
               <a
@@ -134,7 +225,6 @@ const Navbar = () => {
                 href="#"
                 onClick={() => {
                   closeNavMenu();
-                  toggleModal();
                 }}
               >
                 <button className="btn__contact">CONTACT ME</button>
@@ -142,6 +232,40 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
+
+        <div
+          className={`nav__input--wrapper ${
+            searchIsOpen ? "nav__search--open" : ""
+          }`}
+        >
+          <form onSubmit={handleSearch}>
+            <input
+              className="nav__search--input"
+              type="text"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              name="query"
+              placeholder="Type and Press Enter To Search"
+            />
+          </form>
+        </div>
+
+        <button
+          onClick={toggleNavSearch}
+          className={`xmark--close-nav-search ${
+            searchIsOpen ? "nav__search--show-xmark" : ""
+          }`}
+        >
+          <XMark />
+        </button>
+
+        {searchIsOpen && (
+          <style jsx global>{`
+            body {
+              @apply nav__search--open;
+            }
+          `}</style>
+        )}
       </nav>
     </header>
   );

@@ -1,0 +1,77 @@
+.pagination__nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 64px;
+  width: 100vw;
+}
+
+.pagination-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 16px;
+}
+
+.pagination-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  border: none;
+  background-color: rgba(128, 0, 128, 0.1);
+  color: purple;
+  font-size: 32px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.pagination-btn__icon {
+  position: relative;
+  z-index: 2;
+}
+
+.pagination-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 0, 128, 0.2);
+  transform: scale(0);
+  transition: transform 250ms ease-in-out;
+  border-radius: 12px;
+  z-index: 1;
+}
+
+.pagination-btn:hover::before {
+  transform: scale(1);
+}
+
+.pagination-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transition: all 350ms ease-in-out;
+}
+
+.pagination-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.pagination-btn:disabled::before {
+  display: none;
+}

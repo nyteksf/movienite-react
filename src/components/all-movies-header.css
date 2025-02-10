@@ -1,0 +1,126 @@
+/*
+
+    SEARCH PAGE / VIEW ALL (LATEST, POPULAR, RATED)
+
+*/
+
+.all-movies-header__container {
+    margin-top: 56px;
+}
+
+.filter-type {
+    padding-top: 12px;
+}
+
+.dropdown--genre:focus,
+.dropdown:focus {
+    border-color: #8b42b0d9;
+    outline: none;
+}
+
+.dropdown--genre option:checked,
+.dropdown option:checked {
+    background-color: #8b42b0d9;
+    color: #f5f5f5;
+}
+
+.option--main {
+    font-weight: 700;
+    background-color: #8b42b0c1;
+    color: #f5f5f5;
+}
+
+.gradient-purple {
+    background: linear-gradient(
+        to bottom,
+        rgba(161, 31, 60, 0.45) 0%,
+        rgba(147, 82, 179, 0.45) 100%
+    );
+}
+
+.nav__logo--light {
+    filter: invert(0) !important;
+    transition: all 300ms;
+}
+
+.nav__logo--dark {
+    filter: invert(0.95);
+}
+
+.nav__logo--dark:hover {
+    filter: invert(0.8);
+    transition: filter 400ms ease;
+}
+
+.nav__search--input-all {
+    border-bottom: 2px solid rgba(185, 185, 185, 0.65);
+}
+
+.magnifying-glass--dark {
+    color: #333 !important;
+}
+
+.filter-page__header {
+    margin-top: 80px !important;
+}
+
+.view-all__header {
+    width: 100%;
+    max-width: 1145px;
+    margin: 0 auto;
+    color: #333;
+    display: auto;
+}
+
+.movies--wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.movie-wrapper--view-all {
+    width: 100%;
+    max-width: calc(100% / 4);
+    display: flex;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.movie-wrapper--home {
+    max-width: calc(100% / 3);
+    display: flex;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.movies-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.dropdown--genre {
+    transition: all 350ms;
+}
+
+.view-dropdown--genre {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dropdown--genre,
+.dropdown {
+    color: #f5f5f5;
+    margin-top: 8px;
+    cursor: pointer;
+    width: 100%;
+    width: 175px;
+    height: 24px;
+    font-size: 16px;
+    font-weight: 600;
+    padding-left: 16px;
+    background-color: #9352b3;
+    border-radius: 4px;
+    margin-left: 8px;
+    border-bottom: 2px solid purple;
+    border-left: 1px solid purple;
+}

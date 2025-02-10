@@ -1,0 +1,342 @@
+.movieSection {
+  width: 100vw;
+  margin: 0 auto;
+  padding-top: 50px;
+  padding-bottom: 105px;
+  display: flex;
+  flex-direction: column; /* Ensures title and button are stacked vertically */
+  align-items: center; /* Center aligns content horizontally */
+  box-sizing: border-box;
+}
+
+.movie-section__header-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.movieSection__content {
+  max-width: calc(3 * (265px + 28px)); /* Width of 3 movie items + spacing */
+  margin: 0 auto;
+  width: 100%;
+  padding: 0; /* Remove padding from container */
+  display: flex;
+  justify-content: space-between; /* Ensure spacing between movies */
+  display: flex;
+  flex-direction: column;
+}
+
+.bg-gradient {
+  background: linear-gradient(
+    to bottom,
+    rgba(161, 31, 60, 0.45) 0%,
+    rgba(147, 82, 179, 0.45) 100%
+  );
+}
+
+.all__title {
+  font-size: 38px;
+  color: #333;
+  margin-bottom: 48px;
+}
+
+.header__button {
+  position: relative;
+  top: 2px;
+  height: 38px;
+  width: 116px;
+  font-weight: 800;
+  color: #f5f5f5;
+  background-color: #9352b3;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  border-bottom: 2px solid #861abd;
+  border-left: 2px solid #861abd;
+  transition: all 250ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 9px;
+}
+
+.header__button:hover {
+  border-bottom: 1px solid #861abd;
+  border-left: 1px solid #861abd;
+  background-color: #9352b3ee;
+}
+
+.double-chevron-right {
+  margin-left: 6px;
+}
+
+.movies-render-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.offwhite-text {
+  color: #f5f5f5 !important;
+}
+
+/*
+
+ ALL MOVIES (INDEX.HTML)
+
+*/
+
+.popular__title {
+  color: #f5f5f5 !important;
+}
+
+.section--wrapper {
+  max-width: calc(3 * (265px + 28px)); /* Align with movie section */
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.filtered-movie,
+.movie {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.movie__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.movie--wrapper-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(161, 31, 60, 0.45) 0%,
+    rgba(147, 82, 179, 0.45) 100%
+  );
+  z-index: 5;
+  opacity: 0;
+  transition: all 800ms ease;
+}
+
+.movie__description {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  z-index: 10;
+}
+
+.movie__rating--stars {
+  margin-bottom: 2px;
+}
+
+.fa-star-half-stroke,
+.fa-star {
+  color: #ffc741;
+}
+
+.movie__rating--wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  position: relative;
+  top: -100%;
+  transition: all 450ms ease;
+}
+
+.movie-link {
+  text-decoration: none;
+}
+
+.movie__play-btn--wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.movie__play-btn {
+  position: relative;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background-color: #9352b3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f5f5f5;
+  cursor: pointer;
+  transition: all 400ms ease;
+  z-index: 10;
+  opacity: 0;
+}
+
+.movie__play-btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 0;
+  width: 0;
+  border-radius: 50%;
+  background-color: #9352b371;
+  transition: all 400ms ease;
+  z-index: -1;
+}
+
+.movie__play-btn:hover::after {
+  height: 80px;
+  width: 80px;
+}
+
+.movie__play-btn:hover {
+  transform: scale(1.1);
+}
+
+.movie__title-and-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 8px;
+  position: relative;
+  top: 100%;
+  transition: all 450ms ease;
+}
+
+.movie__rating--stars {
+  margin-bottom: 4px;
+}
+
+.movie-title {
+  font-size: 26px;
+  text-align: center;
+  font-weight: 700;
+  color: #f5f5f5;
+  letter-spacing: -0.1px;
+  line-height: 1.25;
+}
+
+.movie__rating--score,
+.movie__release-date {
+  color: #ffffffb3;
+  letter-spacing: 0.45px;
+}
+
+.movie:hover .movie__play-btn {
+  opacity: 1;
+}
+
+.movie:hover .movie--wrapper-bg {
+  opacity: 1;
+}
+
+.movie:hover .movie__title-and-date {
+  top: 0;
+}
+
+.movie:hover .movie__rating--wrapper {
+  top: 0;
+}
+
+.movie:hover .movie__img {
+  filter: blur(2.5px);
+}
+
+.div--spacer {
+  width: calc(100% / 3);
+  border: 1px solid black;
+}
+
+.all__header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.btn--see-all {
+  margin-right: 9px;
+  position: relative;
+  top: 2px;
+  height: 36px;
+  width: 110px;
+  font-weight: 800;
+  color: #f5f5f5;
+  background-color: #9352b3;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  border-bottom: 2px solid #861abd;
+  border-left: 2px solid #861abd;
+  transition: all 250ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.double-angle-right {
+  position: relative;
+  top: -2px;
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+}
+
+.movies--container {
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.movie--wrapper {
+  flex: 1 1 calc(33.33% - 28px); /* 3 items per row with gap adjustment */
+  max-width: 265px; /* Ensure fixed width for each movie item */
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.movie {
+  height: 100%;
+  width: 100%;
+  max-height: 395px;
+  max-width: 265px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.movie__img {
+  width: 100%;
+  height: auto;
+  display: block; /* Prevent extra spacing below images */
+}
+
+.all__link {
+  text-decoration: none;
+}
+

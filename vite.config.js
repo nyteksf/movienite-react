@@ -10,4 +10,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"), // Set @ alias to src directory
     },
   },
+  optimizeDeps: {
+    include: ["webtorrent/dist/webtorrent.min.js"],
+  },
 });

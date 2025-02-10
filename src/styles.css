@@ -1250,7 +1250,7 @@ body.is-seed .show-leech {
     align-items: center;
 }
 
-.movie-wrapper {
+.movie--wrapper {
     width: 100%;
     max-width: calc(100% / 4);
     display: flex;
@@ -1564,7 +1564,7 @@ textarea:focus {
         padding: 0 64px;
     }
 
-    .movie-wrapper {
+    .movie--wrapper {
         max-width: calc(100% / 3);
         margin: 0 auto 32px auto;
     }
@@ -1734,7 +1734,7 @@ textarea:focus {
         padding: 0 80px;
     }
 
-    .movie-wrapper {
+    .movie--wrapper {
         max-width: calc(100% / 2);
         margin: 0 auto 32px auto;
     }
@@ -1930,7 +1930,7 @@ textarea:focus {
         margin-top: 32px;
     }
 
-    .movie-wrapper {
+    .movie--wrapper {
         max-width: calc(100%);
     }
 

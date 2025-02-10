@@ -1,68 +1,78 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import "@/components/LandingPage.css";
+import { SearchBar } from "@/components/SearchBar";
+import RadioButtonsGroup from "@/components/RadioButtonsGroup";
+
+import "@/components/landing-page.css";
 
 const LandingPage = () => {
-  useEffect(() => {
-    const images = ["/slider1.jpg", "/slider2.jpg", "/slider3.jpg"];
+  const searchTitleRef = useRef(null);
+  const landingPageRef = useRef(null);
 
-    let currentIndex = 0;
+  const [searchInput, setSearchInput] = useState("");
+  const [selectedButton, setSelectedButton] = useState(1);
 
-    function changeBackground() {
-      const landingPage = document.getElementById("landing-page");
-      let targetRadioBtn = "";
+  const images = ["/slider1.jpg", "/slider2.jpg", "/slider3.jpg"];
+  const titles = {
+    1: "START STREAMING NOW",
+    2: "ULTRA HD RESOLUTION",
+    3: "THE LATEST MOVIES",
+  };
 
-      // REMOVE ALL ACTIVE STATES FROM FAUX RADIO BTNS
-    /*
-      document
-        .querySelectorAll(".radio__btn")
-        .forEach((btn) => btn.classList.remove("radio__btn--selected"));
-    */
+  const handleRadioSelect = (buttonNumber) => {
+    // Update selected button state
+    setSelectedButton(buttonNumber);
 
-      // RESET LOOP ON 3
-      if (currentIndex === 3) {
-        currentIndex = 0;
-      }
-      /*
-      targetRadioBtn = `.radio__btn--${currentIndex + 1}`;
-
-      document.querySelector(`${targetRadioBtn}`).classList +=
-        " radio__btn--selected";
-      searchTitle[0].classList.remove("search__title--show");
-      */
-
-      // CHANGE SEARCH TITLE AND SELECT CORRESPONDING FAUX RADIO BTN
-      /*
-      switch (currentIndex) {
-        case 0:
-          searchTitle[0].innerHTML = "START STREAMING NOW";
-          break;
-        case 1:
-          searchTitle[0].innerHTML = "ULTRA HD QUALITY";
-          break;
-        case 2:
-          searchTitle[0].innerHTML = "THE LATEST MOVIES";
-          break;
-      }
-      // REANIMATE SEARCH TITLE ON innerHTML REFRESH
-      setTimeout(() => {
-        searchTitle[0].classList.add("search__title--show");
-      }, 2000);
-      */
-      landingPage.style.backgroundImage = `url(${images[currentIndex]})`;
-      currentIndex += 1;
+    // Handle title animation
+    if (searchTitleRef.current) {
+      searchTitleRef.current.classList.remove("search__title--show");
     }
 
-    // CHANGE LANDING PAGE BACKGROUND EVERY 30 SECS
-    setInterval(changeBackground, 30000);
+    // Update background and title with delay
+    setTimeout(() => {
+      if (landingPageRef.current) {
+        landingPageRef.current.style.backgroundImage = `url(${
+          images[buttonNumber - 1]
+        })`;
+      }
+      searchTitleRef.current.textContent = titles[buttonNumber];
+    }, 650);
 
-    // INITIAL CALL
-    changeBackground();
+    // Show title with animation after delay
+    setTimeout(() => {
+      if (searchTitleRef.current) {
+        searchTitleRef.current.classList.add("search__title--show");
+      }
+    }, 1000);
+  };
+
+  // Auto-transition effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Calculate next button number (1-3)
+      const nextButton = selectedButton === 3 ? 1 : selectedButton + 1;
+      handleRadioSelect(nextButton);
+    }, 30000);
+
+    // CLEANUP INTERVAL ON UNMOUNT
+    return () => clearInterval(interval);
+  }, [selectedButton]);
+
+  useEffect(() => {
+    const landingPage = document.getElementById("landing-page");
+    if (landingPage) {
+      landingPageRef.current = landingPage;
+    }
   }, []);
 
   return (
     <section id="landing-page">
-        Home
+      <SearchBar searchTitleRef={searchTitleRef} />
+      <RadioButtonsGroup
+        searchTitleRef={searchTitleRef}
+        selectedButton={selectedButton}
+        handleRadioSelect={handleRadioSelect}
+      />
     </section>
   );
 };

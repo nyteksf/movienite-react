@@ -8,8 +8,14 @@ a {
   text-decoration: none;
 }
 
+header {
+  position: fixed;
+  top: 0;
+  z-index: 600;
+  width: 100%;
+}
+
 nav {
-  transition: all 400ms ease;
   height: 72px;
   width: 100vw;
   max-width: 1232px;
@@ -20,15 +26,42 @@ nav {
   padding: 0 16px;
   font-weight: 400;
   background-color: transparent;
+  opacity: 1;
+  transition: opacity 350ms ease-in-out;
+}
+
+.nav__logo {
+  width: 150px;
+  transition: all 280ms ease-in-out;
+}
+
+.invertLogoColorLight {
+  filter: invert(0) !important;
+}
+
+.invertLogoColorDark {
+  filter: invert(1) !important;
+}
+
+.makeMagLensLight {
+  filter: invert(0) !important;
+}
+
+.makeMagLensDark {
+  filter: invert(1) !important;
+}
+
+.nav-logo-wrapper {
+  cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default;
 }
 
 .nav--scroll {
   background: rgba(0, 0, 0, 0.45);
   max-width: 100%;
-}
-
-.nav__logo {
-  width: 150px;
 }
 
 .nav__right--list,
@@ -67,9 +100,9 @@ nav {
   height: calc(100% + 15px);
 }
 
-.nav__search--open .nav__input--wrapper {
-  top: 0;
-  z-index: 99999;
+.nav__search--open {
+  top: 0 !important;
+  z-index: 99999 !important;
 }
 
 .nav__input--wrapper {
@@ -86,15 +119,66 @@ nav {
   left: 0;
   padding: 20px 0 20px 64px;
   width: 100vw;
-  font-size: 24px;
+  font-size: 26px;
   border: none;
   outline: none;
   transition: all 300ms ease;
+  font-weight: 500;
+  color: #333;
 }
 
 .nav__search--input::placeholder {
   font-size: 26px;
   font-weight: 500;
+}
+
+.hide-nav-links {
+  display: none;
+}
+
+.xmark--close-nav-search {
+  position: absolute;
+  margin-right: 64px;
+  top: -150%;
+  right: -40px;
+  font-size: 20px;
+  color: gray !important;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 999999999;
+  transition: top 450ms ease, opacity 300ms ease 500ms;
+  transform: scale(1.1);
+}
+
+.nav__search--show-xmark {
+  background-color: transparent;
+  transition: all 450ms ease-in-out;
+  border: none;
+  top: 14px !important;
+}
+
+.nav__search--show-xmark:focus,
+.nav__search--show-xmark:focus-visible,
+.nav__search--show-xmark:active {
+  border: none !important;
+  background-color: #f5f5f5 !important;
+}
+
+.xmark--close-nav-search:active {
+  background-color: transparent;
+}
+
+.xmark--close-nav-search.nav__search--show-xmark:hover svg {
+  transform: scale(1.1);
+  transition: all 450ms ease-in-out;
+}
+
+.xmark--close-nav-search.nav__search--show-xmark svg:hover {
+  color: darkgray;
+}
+
+.nav__search--close-vanish {
+  opacity: 0;
 }
 
 .fa-xmark:hover {
@@ -160,11 +244,6 @@ nav {
   color: rgba(188, 188, 189, 0.58);
 }
 
-.vanish-magnifying-glass {
-  visibility: hidden !important;
-  color: #f5f5f5;
-}
-
 .btn__menu--close,
 .btn__menu {
   background-color: transparent;
@@ -188,6 +267,12 @@ nav {
 
 .nav--menu-open .menu__backdrop {
   display: flex;
+}
+
+.discover-icon {
+  font-size: 16px !important;
+  align-items: center;
+  margin-right: 4px;
 }
 
 .menu__links {
@@ -277,6 +362,12 @@ nav {
 
 .lighten-nav-burger {
   color: lightgray;
+}
+
+.navbar-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease-in-out;
 }
 
 @media (max-width: 940px) {
