@@ -13,3 +13,7 @@
   visibility: hidden !important;
   color: #f5f5f5;
 }
+
+.movies-render-box p {
+  color: #333;
+}
