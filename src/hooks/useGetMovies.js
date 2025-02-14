@@ -17,7 +17,7 @@ const useGetMovies = (filterType, selectedGenre, setIsPageLoading, query) => {
 
   const headers = {
     accept: "application/json",
-    Authorization: `Bearer ${API_KEY}`, // <-- Using your API key properly
+    Authorization: `Bearer ${API_KEY}`,
   };
 
   const fetchMovies = useCallback(async (page = 1) => {

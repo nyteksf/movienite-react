@@ -1,5 +1,3 @@
-import useGetMovies from "@/hooks/useGetMovies";
-
 import "./pagination-navbar.css";
 
 const PaginationNavbar = ({ pageNum, setPageNum, loading }) => {

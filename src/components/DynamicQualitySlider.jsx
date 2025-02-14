@@ -26,15 +26,13 @@ const DynamicQualitySlider = ({
     
     let position = 0;
     if (index === 0) {
-      // For the first label, the circle's left edge is at the label's left.
-      // The circle's center is 10px to the right of the label's left.
+      // FIRST LABEL: CIRCLE'S LEFT EDGE ALIGNED WITH LABEL'S LEFT
       position = labelRect.left - containerRect.left + 10;
     } else if (index === uniqueHashesEtc.length - 1) {
-      // For the last label, the circle's right edge is at the label's right.
-      // The circle's center is 10px to the left of the label's right.
+      // LAST QUALITY LABEL: CIRCLE'S RIGHT EDGE IS AT LABEL'S RIGHT.
       position = labelRect.right - containerRect.left - 10;
     } else {
-      // For the other labels, the pseudo-element is centered in the label.
+      // CENTER ALL ADD'L PSEUDO-ELEMENTS.
       position = labelRect.left - containerRect.left + (labelRect.width / 2);
     }
     

@@ -54,11 +54,13 @@ const Navbar = ({
   const toggleNavSearch = () => setSearchIsOpen((prev) => !prev);
 
   const openNavMenu = () => {
-    console.log("D");
+    // ToDo: ADD MOBILE NAV
+    console.log(1)
   };
 
   const closeNavMenu = () => {
-    console.log("E");
+    // ToDo: ADD MOBILE NAV
+    console.log(0)
   };
 
   return (

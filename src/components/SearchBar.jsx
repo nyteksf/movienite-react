@@ -15,12 +15,7 @@ export const SearchBar = ({ searchTitleRef }) => {
     setValue(value);
   };
 
-  const handleSubmit = () => {
-    console.log("SUBMIT FIRED!");
-  };
-
   useEffect(() => {
-    // ToDo: ADD setTimeout() OR OTHER TECHNIQUE TO OFFSET PAGE LOADING/DECRYPTING/LOADING STATE
     searchTitleRef.current.classList.add("search__title--show");
   }, []);
 

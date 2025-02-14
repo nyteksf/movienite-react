@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 
@@ -15,13 +15,13 @@ const ButtonToTop = () => {
       if (!latestSection && !contentContainer) return;
 
       if (latestSection) {
-        // Original logic for #latest section
+        // OG LOGIC FOR SECTION=LATEST
         const sectionTop = latestSection.getBoundingClientRect().top;
         const viewportHeight = window.innerHeight;
         setIsVisible(sectionTop < viewportHeight * 0.8);
       } else {
-        // New logic for content-container - show button after scrolling down a bit
-        setIsVisible(window.scrollY > 300); // Show after 300px of scrolling
+        // NEW LOGIC FOR CONTENT-CONTAIENR - SHOWS BTN AFTER SMALL SCROLL DOWN
+        setIsVisible(window.scrollY > 300); // SHOWS AFTER 300px OF SCROLLING
       }
     };
 

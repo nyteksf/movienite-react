@@ -77,27 +77,56 @@ export const useSearchTrackers = (imdbId, movieTitle) => {
       );
 
       if (filteredMovies.length > 0) {
-        const movie = filteredMovies[0];
-        const quality = {
-          quality: "Unknown",
-          hash: movie.info_hash,
-          size: `${Math.round(movie.size / (1024 * 1024 * 1024))} GB`,
-          magnetLink: formMagnetLink(movie.info_hash),
-        };
+        // GROUP MOVIES BY QUALITY
+        const qualityGroups = filteredMovies.reduce((acc, movie) => {
+          const qualityRegex = /\d{3,4}p/i;
+          const qualityMatch = movie.name.match(qualityRegex);
+
+          if (qualityMatch) {
+            const quality = qualityMatch[0];
+            if (!acc[quality]) {
+              acc[quality] = movie;
+            } else if (
+              parseInt(movie.seeders) > parseInt(acc[quality].seeders)
+            ) {
+              // KEEP TORRENT VERSION WITH MOST SEEDERS FOR EACH QUALITY LEVEL
+              acc[quality] = movie;
+            }
+          }
+          return acc;
+        }, {});
+
+        const qualities = Object.entries(qualityGroups).map(
+          ([quality, movie]) => ({
+            quality: quality,
+            hash: movie.info_hash,
+            size: `${Math.round(movie.size / (1024 * 1024 * 1024))} GB`,
+            magnetLink: formMagnetLink(movie.info_hash),
+          })
+        );
+
+        // SORT QUALITIES FROM HIGHEST TO LOWEST ON SLIDER
+        qualities.sort((b, a) => {
+          const getPixels = (quality) =>
+            parseInt(quality.quality.replace("p", ""));
+          return getPixels(b) - getPixels(a);
+        });
 
         setMovieData({
           source: "TPB",
-          title: movie.name,
-          qualities: [quality],
-          selectedQuality: quality,
+          title: filteredMovies[0].name,
+          qualities,
+          selectedQuality: qualities[0],
         });
-        setSelectedQuality(quality);
+        setSelectedQuality(qualities[0]);
         return true;
       }
       return false;
     } catch (err) {
       console.error("TPB search error:", err);
-      throw new Error("Failed to find movie on both YTS and TPB");
+      throw new Error(
+        "Failed to find movie on both YTS and The Pirate Bay. Please try again later."
+      );
     }
   }, [imdbId, movieTitle, containsTitle, formMagnetLink]);
 

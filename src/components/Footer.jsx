@@ -12,7 +12,7 @@ import "@/components/footer.css";
 const Footer = () => {
   const [dates, setDates] = useState([]);
 
-  // Render dates dynamically
+  // RENDER DATES DYNAMICALLY
   useEffect(() => {
     const renderDates = () => {
       const currentDate = new Date();
@@ -29,7 +29,7 @@ const Footer = () => {
     };
 
     renderDates();
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);
 
   return (
     <footer id="footer">
@@ -72,8 +72,8 @@ const Footer = () => {
               <h2>Latest News</h2>
             </li>
             {dates
-              .slice() // Create a copy of the dates array to avoid mutating the original array
-              .sort((a, b) => new Date(b) - new Date(a)) // Sort dates in descending order (newest to oldest)
+              .slice() // CREATE COPY OF DATES ARRAY TO AVOID SIN OF MODIFYING THE ORIGINAL
+              .sort((a, b) => new Date(b) - new Date(a)) // SORT DATES NEWEST TO OLDEST (DESC.)
               .map((date, index) => (
                 <li
                   key={index}
@@ -81,7 +81,7 @@ const Footer = () => {
                 >
                   <a className="footer__list-item--blog-link" href="#">
                     Blog Post {dates.length - index}{" "}
-                    {/* Reverse the index to start with Blog Post 3 */}
+                    {/* REVERSE ORDER: START W/ BLOG POST 3 */}
                   </a>
                   <small className="footer__small-text">{date}</small>
                 </li>

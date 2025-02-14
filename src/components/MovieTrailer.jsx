@@ -6,14 +6,14 @@ const MovieTrailer = ({ trailerKey, setLoading, setShowTrailer }) => {
   const [isIframeLoaded, setIsIframeLoaded] = useState(false);
 
   useEffect(() => {
-    setLoading(true); // Ensure loading starts
+    setLoading(true); // ENSURE LOADING
   }, []);
 
   const handleIframeLoad = () => {
     setTimeout(() => {
       setLoading(false);
       setIsIframeLoaded(true);
-    }, 1000); // Delay for better loading UX
+    }, 1000); // SET DELAY FOR IMPROVED UX
   };
 
   return (

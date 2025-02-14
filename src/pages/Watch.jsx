@@ -30,11 +30,12 @@ const Watch = () => {
   const [qualityArr, setQualityArr] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
   const [webtorLoaded, setWebtorLoaded] = useState(false);
+  const [torrentSource, setTorrentSource] = useState(null);
   const [isPlayClicked, setIsPlayClicked] = useState(false);
-  const [trailerKey, setTrailerKey] = useState(movieData | null);
   const [selectedQuality, setSelectedQuality] = useState(null);
   const [uniqueHashesEtc, setUniqueHashesEtc] = useState(null);
   const [showVideoPlayer, setShowVideoPlayer] = useState(false);
+  const [trailerKey, setTrailerKey] = useState(movieData | null);
   const [uniqueQualitySet, setUniqueQualitySet] = useState(null);
   const [isQualitySelected, setIsQualitySelected] = useState(false);
   const [isInitializingPlayer, setIsInitializingPlayer] = useState(false);
@@ -42,15 +43,12 @@ const Watch = () => {
   let poster;
   let title;
 
-  // Custom hook usage
   const {
     movieData: torrentData,
     isLoading: torrentLoading,
-    error: torrentError,
-    selectQuality,
   } = useSearchTrackers(movieData?.imdb_id, movieData?.title);
 
-  // Helper functions
+  // HELPER FUNCTIONS:
   const generateMagnetLink = (hash) => {
     if (!hash || hash.length !== 40) {
       throw new Error("Invalid hash: Must be a 40-character hex string");
@@ -97,7 +95,20 @@ const Watch = () => {
     setUniqueHashesEtc(uniqueFeatures);
   };
 
-  // Event handlers
+  const handleVideoPlayerClose = () => {
+    const playerElement = document.getElementById("streaming-player");
+    if (playerElement) {
+      while (playerElement.firstChild) {
+        playerElement.removeChild(playerElement.firstChild);
+      }
+    }
+    setShowVideoPlayer(false);
+    setIsInitializingPlayer(false);
+    setSelectedQuality(null);
+    setIsQualitySelected(false);
+  };
+
+  // EVT HANDLERS
   const handlePlayClick = () => {
     if (!webtorLoaded) {
       console.warn("Webtor has not yet loaded. Retrying...");
@@ -122,7 +133,6 @@ const Watch = () => {
     setLoading(true);
     setShowTrailer(true);
     setTrailerKey(getTrailer());
-    console.log("trailerKey: ", trailerKey);
   };
 
   const toggleQualitySlider = () => {
@@ -132,14 +142,23 @@ const Watch = () => {
     }
   };
 
-  // useEffect hooks
+  const handleNavigateBack = (e) => {
+    e.stopPropagation();
+
+    if (window.history.length > 1) {
+      navigate(-1); // TRY TO GO BACK IN HISTORY IF POSSIBLE
+    } else {
+      navigate("/"); // FALLBACK TO "/" IF IMPOSSIBLE
+    }
+  };
+
+  // useEffect HOOKS
   useEffect(() => {
     if (!window.webtor) {
       const script = document.createElement("script");
       script.src = "https://cdn.webtor.io/bundle.js";
       script.async = true;
       script.onload = () => {
-        console.log("Webtor loaded!");
         setWebtorLoaded(true);
       };
       document.body.appendChild(script);
@@ -188,10 +207,9 @@ const Watch = () => {
       return;
     }
 
-    console.log("Initializing Webtor player...");
     setLoading(true);
 
-    window.webtor.push({
+    const player = window.webtor.push({
       id: "streaming-player",
       magnet: generateMagnetLink(storedHash),
       width: "800px",
@@ -210,7 +228,6 @@ const Watch = () => {
       },
       on: {
         ready: () => {
-          console.log("Webtor player is ready");
           setLoading(false);
           setIsInitializingPlayer(false);
         },
@@ -224,7 +241,6 @@ const Watch = () => {
           setIsInitializingPlayer(false);
         },
         loaded: () => {
-          console.log("Webtor fully loaded.");
           setLoading(false);
           setIsInitializingPlayer(false);
         },
@@ -234,19 +250,32 @@ const Watch = () => {
         },
       },
     });
+
+    // CLEANUP TIME! OR NEW PLAYER WILL BE HIDDEN BEHIND OLD, DEAD ONE.
+    return () => {
+      if (player && player.destroy) {
+        player.destroy();
+      }
+    };
   }, [isInitializingPlayer, storedHash, webtorLoaded, movieData]);
+
+  useEffect(() => {
+    if (torrentData) {
+      setTorrentSource(torrentData.source);
+    }
+  }, [torrentData]);
 
   return (
     <div className="watch-movie-page">
-      {loading && <LoadingOverlay isPageLoading={loading | !movieData} />}
+      {loading && <LoadingOverlay isPageLoading={loading | !movieData} className={""} torrentSource={torrentSource} />}
 
       {!movieData ? (
         <div style={{ color: "#F5F5F5" }}>
-          Sorry, no movie data is available.
+          Sorry, no movie data is available. Please try again.
         </div>
       ) : (
         <>
-          {/* Background Image */}
+          {/* BG IMAGE */}
           <div
             className="watch-movie-page--bg"
             style={{
@@ -254,10 +283,10 @@ const Watch = () => {
             }}
           />
 
-          {/* Main Content */}
+          {/* MAIN CONTENT */}
           <div className="watch-movie--container">
             <div className="watch-movie--wrapper">
-              {/* Movie Poster */}
+              {/* MOVIE POSTER */}
               <div className="watch-movie__poster">
                 <img
                   src={`https://image.tmdb.org/t/p/w500${movieData.poster_path}`}
@@ -265,12 +294,12 @@ const Watch = () => {
                 />
               </div>
 
-              {/* Movie Info */}
+              {/* MOVIE INFO */}
               <div className="watch-movie__data">
                 <X
-                  title="Double click to return"
+                  title="Double click to go back"
                   className="xmark--watch-movie"
-                  onClick={() => navigate(-1)}
+                  onClick={handleNavigateBack}
                 />
 
                 <div className="watch-movie__data-title">
@@ -337,13 +366,14 @@ const Watch = () => {
                   </ul>
                 </div>
 
-                {/* Cast Info */}
+                {/* CAST INFO */}
                 <div
                   className={`cast-info--wrapper ${
                     showCast ? "display-cast" : ""
                   }`}
                 >
                   <X
+                    title="Click to hide"
                     className="cast-info--xmark-close"
                     onClick={() => setShowCast(false)}
                   />
@@ -403,7 +433,7 @@ const Watch = () => {
             </div>
           </div>
           {isQualitySelected && storedHash && showVideoPlayer && (
-            <TorrentPlayer setShowVideoPlayer={setShowVideoPlayer} />
+            <TorrentPlayer setShowVideoPlayer={handleVideoPlayerClose} movieData={torrentData}/>
           )}
 
           {showTrailer && trailerKey && (

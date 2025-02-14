@@ -2,22 +2,22 @@ import { useEffect, useLayoutEffect } from "react";
 
 const ScrollToTop = () => {
   function ScrollToTop() {
-    // Use both useLayoutEffect and useEffect for better coverage
+    // USE BOTH useLayoutEffect AND useEffect FOR BETTER COVERAGE
     useLayoutEffect(() => {
       const scrollToTop = () => {
         window.scrollTo({
           top: 0,
-          behavior: "instant", // Use 'instant' instead of smooth for immediate effect
+          behavior: "smooth",
         });
       };
 
-      // Attempt 1: Immediate execution
+      // ATTEMPT 1: IMMEDIATE EXECUTION
       scrollToTop();
 
-      // Attempt 2: After a short delay
+      // ATTEMPT 2: AFTER SHORT DELAY
       const timeoutId = setTimeout(scrollToTop, 10);
 
-      // Attempt 3: Listen for load event
+      // ATTEMPT 3: LISTEN FOR LOAD EVENT
       window.addEventListener("load", scrollToTop);
 
       return () => {
@@ -26,7 +26,7 @@ const ScrollToTop = () => {
       };
     }, []);
 
-    // Backup useEffect
+    // BACKUP useEffect()
     useEffect(() => {
       const scrollToTop = () => {
         window.scrollTo({
@@ -35,11 +35,11 @@ const ScrollToTop = () => {
         });
       };
 
-      // Additional attempt after component mount
+      // ADD'L ATTEMPT AFTER MOUNT
       scrollToTop();
     }, []);
 
-    return null; // This component doesn't render anything
+    return null; // WE ARE NOT RENDERING ANYTHING HERE
   }
 };
 

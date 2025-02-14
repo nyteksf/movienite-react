@@ -24,14 +24,12 @@ const ContactMeModal = ({
         })
         .then(
           (result) => {
-            console.log("SUCCESS!", result.text);
             setTimeout(() => {
               setIsModalOpen(false);
               form.current.reset();
             }, "300");
           },
           (error) => {
-            console.log("FAILED...", error.text);
             alert(
               "Error: The email service is temporarily unavailable. Please contact me directly on email.nytek@gmail.com"
             );
@@ -59,7 +57,6 @@ const ContactMeModal = ({
     setTimeout(() => {
       setIsModalOpen(false);
       form.current.reset();
-      console.log("isSubmit!: ", isSubmit)
       isSubmit ? toast.success("Message sent successfully.") : "";
     }, 300);
   };

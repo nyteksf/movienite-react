@@ -39,6 +39,23 @@
   top: 2px;
 }
 
+.torrentSource {
+  opacity: 0;
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+  transition: opacity 300ms ease;
+  position: absolute;
+  top: 36%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.showTorrentSource {
+  opacity: 1;
+  transition: opacity 300ms ease;
+}
+
 .pseudo-button {
   height: 88px; /* Slightly smaller for better proportion */
   width: 88px;

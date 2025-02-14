@@ -9,7 +9,6 @@ const LandingPage = () => {
   const searchTitleRef = useRef(null);
   const landingPageRef = useRef(null);
 
-  const [searchInput, setSearchInput] = useState("");
   const [selectedButton, setSelectedButton] = useState(1);
 
   const images = ["/slider1.jpg", "/slider2.jpg", "/slider3.jpg"];
@@ -20,15 +19,14 @@ const LandingPage = () => {
   };
 
   const handleRadioSelect = (buttonNumber) => {
-    // Update selected button state
     setSelectedButton(buttonNumber);
 
-    // Handle title animation
+    // HANDLE TITLE ANIMATION
     if (searchTitleRef.current) {
       searchTitleRef.current.classList.remove("search__title--show");
     }
 
-    // Update background and title with delay
+    // UPDATE BG & TITLE (WITH DELAY)
     setTimeout(() => {
       if (landingPageRef.current) {
         landingPageRef.current.style.backgroundImage = `url(${
@@ -38,7 +36,7 @@ const LandingPage = () => {
       searchTitleRef.current.textContent = titles[buttonNumber];
     }, 650);
 
-    // Show title with animation after delay
+    // SHOW TITLE W/ ANIMATION (AFTER DELAY)
     setTimeout(() => {
       if (searchTitleRef.current) {
         searchTitleRef.current.classList.add("search__title--show");
@@ -46,10 +44,10 @@ const LandingPage = () => {
     }, 1000);
   };
 
-  // Auto-transition effect
+  // AUTO-TRANSITION FX
   useEffect(() => {
     const interval = setInterval(() => {
-      // Calculate next button number (1-3)
+      // CALCULATE NEXT BTN # (eg. 1-2-3)
       const nextButton = selectedButton === 3 ? 1 : selectedButton + 1;
       handleRadioSelect(nextButton);
     }, 30000);

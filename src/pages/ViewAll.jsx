@@ -22,9 +22,6 @@ const ViewAll = () => {
 
   const location = useLocation();
 
-  console.log("CATEGORY NAME: ", category);
-  console.log("QUERY: ", query);
-
   const [pageNum, setPageNum] = useState(1);
   const [filterType, setFilterType] = useState(category || "all");
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -40,13 +37,13 @@ const ViewAll = () => {
   );
 
   useEffect(() => {
-    // Reset page number when URL changes
+    // RESET PAGE NUM WHEN QUERY CHANGES
     setPageNum(1);
-    // Reset filter type based on new category
+    // RESET FILTER TYPE BASED ON NEW CATEGORY
     setFilterType(category || "all");
-    // Fetch movies with new query
+    // FETCH MOVIES WITH NEW QUERY
     fetchMovies(1);
-  }, [location.pathname, category, query]); // This will trigger on URL changes
+  }, [location.pathname, category, query]); // TRIGGERS ON URL CHANGE
 
   // HANDLE CATEGORY FILTER & GENRE CHANGES
   useEffect(() => {

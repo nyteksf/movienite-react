@@ -74,7 +74,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 28px;
-  width: 100%;
+  width: 99.9%;
   justify-content: space-between;
 }
 
@@ -138,6 +138,7 @@
   flex-direction: column;
   justify-content: space-around;
   z-index: 10;
+  border: .5px solid #d8d8d86f;
 }
 
 .movie__rating--stars {

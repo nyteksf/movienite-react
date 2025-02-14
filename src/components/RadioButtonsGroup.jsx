@@ -1,5 +1,3 @@
-import { useState, useRef, useEffect } from "react";
-
 import "@/components/radio-buttons-group.css";
 
 /* MANUAL SELECTION FAUX RADIO BUTTON FUNCTIONALITY */

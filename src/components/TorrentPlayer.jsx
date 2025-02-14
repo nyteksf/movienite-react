@@ -1,20 +1,19 @@
-import '@/components/torrent-player.css';
+import "@/components/torrent-player.css";
 
 const TorrentPlayer = ({ setShowVideoPlayer }) => {
-
   return (
-    <div className="torrent-player-overlay" onClick={(e) => {
-      e.stopPropagation();
-      setShowVideoPlayer(false);
-    }}>
-      <div 
+    <div
+      className="torrent-player-overlay"
+      onClick={(e) => {
+        e.stopPropagation();
+        setShowVideoPlayer(false);
+      }}
+    >
+      <div
         className="torrent-player-container"
-        onClick={(e) => e.stopPropagation()} // Prevent click from bubbling
+        onClick={(e) => e.stopPropagation()}
       >
-        <div 
-          id="streaming-player"
-          className="torrent-player-video"
-        />
+        <div id="streaming-player" className="torrent-player-video" />
       </div>
     </div>
   );
