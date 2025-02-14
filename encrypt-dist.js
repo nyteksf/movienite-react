@@ -12,18 +12,24 @@ const distDir = path.join(__dirname, "dist");
 
 // Encrypt index.html
 const htmlContent = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
-const encryptedHtml = pagecrypt.encrypt(htmlContent, password);
-fs.writeFileSync(path.join(distDir, "index.html"), encryptedHtml);
+pagecrypt
+  .encrypt(htmlContent, password)
+  .then((encryptedHtml) => {
+    fs.writeFileSync(path.join(distDir, "index.html"), encryptedHtml);
 
-// Copy pagecrypt loader
-const loaderPath = path.join(
-  __dirname,
-  "node_modules",
-  "pagecrypt",
-  "dist",
-  "loader.js"
-);
-const loaderContent = fs.readFileSync(loaderPath, "utf8");
-fs.writeFileSync(path.join(distDir, "loader.js"), loaderContent);
+    // Copy pagecrypt loader
+    const loaderPath = path.join(
+      __dirname,
+      "node_modules",
+      "pagecrypt",
+      "dist",
+      "loader.js"
+    );
+    const loaderContent = fs.readFileSync(loaderPath, "utf8");
+    fs.writeFileSync(path.join(distDir, "loader.js"), loaderContent);
 
-console.log("Build encrypted successfully!");
+    console.log("Build encrypted successfully!");
+  })
+  .catch((error) => {
+    console.error("Encryption failed:", error);
+  });
