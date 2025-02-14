@@ -43,6 +43,9 @@ let encryptedHtml;
 try {
   encryptedHtml = pagecrypt.encrypt(htmlContent, password);
 
+  console.log("🔹 Full encryption result:", JSON.stringify(encryptedHtml, null, 2));
+  console.log("🔹 Encryption result properties:", Object.keys(encryptedHtml));
+
   console.log("🔹 Encryption result:", {
     type: typeof encryptedHtml,
     isBuffer: Buffer.isBuffer(encryptedHtml),
