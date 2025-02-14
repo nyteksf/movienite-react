@@ -1,4 +1,4 @@
-import pagecrypt from "pagecrypt";
+import * as pagecrypt from "pagecrypt";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
