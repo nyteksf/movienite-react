@@ -40,6 +40,11 @@ fs.writeFileSync(htmlFilePath, encryptedHtml);
 
 console.log("✅ Encrypted file written successfully!");
 
+console.log("🔹 Type of encryptedHtml:", typeof encryptedHtml);
+console.log("🔹 Encrypted HTML (entire content):", encryptedHtml);
+
+console.log("🔹 encryptedHtml structure:", JSON.stringify(encryptedHtml, null, 2));
+
 // Copy pagecrypt loader
 const loaderPath = path.join(
   __dirname,
