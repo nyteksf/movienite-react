@@ -17,31 +17,3 @@
 .movies-render-box p {
   color: #333;
 }
-
-.container {
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* Centers everything vertically */
-  height: 400px; /* Full viewport height */
-  display: none;
-}
-
-.lock-art,
-.box {
-  margin: 0;
-  padding: 0;
-  line-height: 1;
-}
-
-.lock-art {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end; /* Pushes content downward */
-}
-
-.box {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* Pushes content upward */
-}

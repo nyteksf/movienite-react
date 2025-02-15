@@ -332,14 +332,32 @@
         letter-spacing: 0.025em;
         padding: 4rem 1rem 1rem;
       }
+      .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto; 
+      }
+      .lock-art,
       .box {
-        max-width: 24rem;
-        width: 100%;
-        background: var(--gray-800);
-        padding: 1rem;
-        border-radius: 0.125rem;
-        margin: 0 auto;
-        height: 170px;
+        position: relative;
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .lock-art {
+        justify-content: flex-end;
+      }
+      .box {
+        justify-content: flex-start;
       }
       header {
         align-items: center;
@@ -428,27 +446,9 @@
     <main>
       <div
         className="container"
-        style="
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center; /* Centers everything vertically */
-          height: 400px; /* Full viewport height */
-        "
       >
         <pre
           className="lock-art"
-          style="
-            color: lightgray;
-            left: 49.7%;
-            top: 50.2%;
-            transform: translateX(-50%);
-            position: absolute;
-            margin: 0;
-            padding: 0;
-            line-height: 1;
-            display: flex; flex-direction: column; justify-content: flex-end;
-          "
         >
 
                                                            /\ o  
@@ -465,9 +465,9 @@
          |_|_|_\___/\_/|_\___|_||_|_|\__\___|    |_________________|
 
         </pre>
-        <div class="box" style="margin: 0; /* padding: 0; */ line-height: 1; display: flex;
-        flex-direction: column;
-        justify-content: flex-start; position: relative; top: 109px !important;">
+        <div
+          class="box"
+        >
           <div id="load">
             <p class="spinner"></p>
             <p>Loading...</p>
