@@ -11,26 +11,29 @@ const distDir = path.join(__dirname, "dist");
 
 async function main() {
   console.log("🔹 Starting encryption process...");
+  console.log("🔹 Available pagecrypt methods:", Object.keys(pagecrypt));
   
-  // Setup file paths
   const htmlFilePath = path.join(distDir, "index.html");
-  const tempFilePath = path.join(distDir, "index.temp.html");
   
   try {
-    console.log("🔹 Creating temporary file for encryption");
+    // Read the HTML content
+    const htmlContent = fs.readFileSync(htmlFilePath, "utf8");
+    console.log("🔹 Read HTML file, length:", htmlContent.length);
     
-    // Copy original to temp file
-    fs.copyFileSync(htmlFilePath, tempFilePath);
+    // Get the encryption function
+    if (typeof pagecrypt.default === 'function') {
+      console.log("🔹 Using pagecrypt.default");
+      const encryptedContent = await pagecrypt.default(htmlContent, password);
+      fs.writeFileSync(htmlFilePath, encryptedContent);
+    } else if (typeof pagecrypt.encrypt === 'function') {
+      console.log("🔹 Using pagecrypt.encrypt");
+      const encryptedContent = await pagecrypt.encrypt(htmlContent, password);
+      fs.writeFileSync(htmlFilePath, encryptedContent);
+    } else {
+      throw new Error("No valid encryption function found in pagecrypt module");
+    }
     
-    console.log("🔹 Starting file encryption");
-    
-    // Use pagecrypt's file-based encryption
-    await pagecrypt.encryptFile(tempFilePath, htmlFilePath, password);
-    
-    console.log("✅ File encrypted successfully");
-    
-    // Clean up temp file
-    fs.unlinkSync(tempFilePath);
+    console.log("✅ Content encrypted successfully");
     
     // Copy pagecrypt loader
     const loaderPath = path.join(
@@ -40,23 +43,22 @@ async function main() {
       "dist",
       "loader.js"
     );
+    
+    if (!fs.existsSync(loaderPath)) {
+      throw new Error(`Loader not found at: ${loaderPath}`);
+    }
+    
     const loaderContent = fs.readFileSync(loaderPath, "utf8");
     fs.writeFileSync(path.join(distDir, "loader.js"), loaderContent);
     
     console.log("✅ Process completed successfully!");
     
   } catch (error) {
-    console.error("❌ Error during encryption:", error);
-    
-    // Clean up temp file if it exists
-    try {
-      if (fs.existsSync(tempFilePath)) {
-        fs.unlinkSync(tempFilePath);
-      }
-    } catch (cleanupError) {
-      console.error("❌ Error during cleanup:", cleanupError);
-    }
-    
+    console.error("❌ Error during encryption:", {
+      message: error.message,
+      stack: error.stack,
+      pagecryptKeys: Object.keys(pagecrypt)
+    });
     process.exit(1);
   }
 }
