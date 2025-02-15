@@ -9,85 +9,104 @@ const __dirname = path.dirname(__filename);
 const password = process.env.ENCRYPTION_PASSWORD || "your-password-here";
 const distDir = path.join(__dirname, "dist");
 
-// Debug environment
-console.log("🔹 Starting script with environment:", {
+// Force console logs to be synchronous and unbuffered
+const originalLog = console.log;
+console.log = (...args) => {
+  originalLog(...args);
+  if (process.stdout && process.stdout.write) {
+    process.stdout.write(''); // Force flush
+  }
+};
+
+// Debug environment immediately
+console.log("🔹 DEBUG 1: Script started");
+console.log("🔹 Environment:", {
   NODE_ENV: process.env.NODE_ENV,
   NODE_VERSION: process.version,
   PWD: process.cwd(),
   DIST_DIR: distDir
 });
 
-// Debug pagecrypt
-console.log("🔹 Pagecrypt version:", pagecrypt.version || 'unknown');
-console.log("🔹 Pagecrypt exports:", Object.keys(pagecrypt));
-console.log("🔹 Pagecrypt encrypt type:", typeof pagecrypt.encrypt);
+// Debug pagecrypt immediately
+console.log("🔹 DEBUG 2: Checking pagecrypt");
+console.log("🔹 Pagecrypt type:", typeof pagecrypt);
+console.log("🔹 Available methods:", Object.keys(pagecrypt));
 
 // Read index.html
 const htmlFilePath = path.join(distDir, "index.html");
-console.log("🔹 Reading from:", htmlFilePath);
+console.log("🔹 DEBUG 3: Reading file from", htmlFilePath);
 
 let htmlContent;
 try {
   htmlContent = fs.readFileSync(htmlFilePath, "utf8");
-  console.log("🔹 Read index.html successfully. Length:", htmlContent.length);
-  console.log("🔹 First 100 chars:", htmlContent.substring(0, 100));
+  console.log("🔹 DEBUG 4: File read success, length:", htmlContent.length);
 } catch (error) {
   console.error("❌ Failed to read index.html:", error);
   process.exit(1);
 }
 
-// Encrypt with detailed logging
+// Try multiple encryption approaches
 let encryptedHtml;
 try {
-  console.log("🔹 Starting encryption...");
-  encryptedHtml = pagecrypt.encrypt(htmlContent, password);
+  console.log("🔹 DEBUG 5: Starting encryption attempts");
   
-  // Log EVERYTHING about the result
-  console.log("🔹 Raw encryption result type:", typeof encryptedHtml);
-  console.log("🔹 Is null or undefined:", encryptedHtml == null);
-  console.log("🔹 Constructor name:", encryptedHtml?.constructor?.name);
-  console.log("🔹 Has toString?:", typeof encryptedHtml?.toString === 'function');
+  // First try: Standard encrypt
+  try {
+    console.log("🔹 DEBUG 6: Attempting standard encrypt");
+    encryptedHtml = pagecrypt.encrypt(htmlContent, password);
+    console.log("🔹 DEBUG 7: Standard encrypt result type:", typeof encryptedHtml);
+  } catch (e) {
+    console.log("🔹 DEBUG 8: Standard encrypt failed:", e.message);
+  }
   
-  if (typeof encryptedHtml === 'object') {
-    console.log("🔹 Object keys:", Object.keys(encryptedHtml));
-    console.log("🔹 Object entries:", Object.entries(encryptedHtml));
+  // Second try: encryptSync if it exists
+  if (typeof encryptedHtml !== 'string' && pagecrypt.encryptSync) {
+    try {
+      console.log("🔹 DEBUG 9: Attempting encryptSync");
+      encryptedHtml = pagecrypt.encryptSync(htmlContent, password);
+      console.log("🔹 DEBUG 10: encryptSync result type:", typeof encryptedHtml);
+    } catch (e) {
+      console.log("🔹 DEBUG 11: encryptSync failed:", e.message);
+    }
+  }
+  
+  // If we got an object, try to extract content
+  if (typeof encryptedHtml === 'object' && encryptedHtml !== null) {
+    console.log("🔹 DEBUG 12: Got object result, keys:", Object.keys(encryptedHtml));
     
-    // Try to get the actual encrypted content
-    if (encryptedHtml.content) {
-      console.log("🔹 Found .content property, using that");
-      encryptedHtml = encryptedHtml.content;
-    } else if (encryptedHtml.data) {
-      console.log("🔹 Found .data property, using that");
-      encryptedHtml = encryptedHtml.data;
-    } else if (encryptedHtml.result) {
-      console.log("🔹 Found .result property, using that");
-      encryptedHtml = encryptedHtml.result;
+    // Try common property names
+    const possibleProps = ['content', 'data', 'result', 'encrypted', 'text', 'value'];
+    for (const prop of possibleProps) {
+      if (typeof encryptedHtml[prop] === 'string') {
+        console.log(`🔹 DEBUG 13: Found string in .${prop}`);
+        encryptedHtml = encryptedHtml[prop];
+        break;
+      }
     }
   }
 
-  // Convert to string if needed
-  if (Buffer.isBuffer(encryptedHtml)) {
-    console.log("🔹 Converting Buffer to string");
-    encryptedHtml = encryptedHtml.toString('utf8');
-  } else if (encryptedHtml instanceof ArrayBuffer) {
-    console.log("🔹 Converting ArrayBuffer to string");
-    encryptedHtml = Buffer.from(encryptedHtml).toString('utf8');
-  } else if (typeof encryptedHtml !== 'string') {
-    throw new Error(`Unexpected encryption result type: ${typeof encryptedHtml}`);
+  // Final validation
+  if (typeof encryptedHtml !== 'string') {
+    throw new Error(`Encryption result not usable. Type: ${typeof encryptedHtml}`);
   }
+
+  console.log("🔹 DEBUG 14: Final validation passed");
 
 } catch (error) {
   console.error("❌ Encryption failed:", error);
-  console.error("🔹 Error details:", {
+  console.error("🔹 Full error details:", {
     name: error.name,
     message: error.message,
-    stack: error.stack
+    stack: error.stack,
+    encryptedHtmlType: typeof encryptedHtml,
+    encryptedHtmlKeys: encryptedHtml ? Object.keys(encryptedHtml) : null
   });
   process.exit(1);
 }
 
 // Write the encrypted HTML
 try {
+  console.log("🔹 DEBUG 15: Writing encrypted content");
   fs.writeFileSync(htmlFilePath, encryptedHtml);
   console.log("✅ Encrypted file written successfully!");
 } catch (error) {
@@ -97,6 +116,7 @@ try {
 
 // Copy pagecrypt loader
 try {
+  console.log("🔹 DEBUG 16: Copying loader");
   const loaderPath = path.join(
     __dirname,
     "node_modules",
