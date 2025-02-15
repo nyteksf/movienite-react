@@ -17,3 +17,17 @@
 .movies-render-box p {
   color: #333;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Adjust the gap as needed */
+  height: 100vh; /* Ensure the container takes full viewport height */
+}
+
+.lock-art {
+  /* Optional: Adjust the margin to control spacing */
+  margin: 0;
+}
