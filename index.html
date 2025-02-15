@@ -426,16 +426,28 @@
   </head>
   <body>
     <main>
-      <div className="container">
+      <div
+        className="container"
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center; /* Centers everything vertically */
+          height: 400px; /* Full viewport height */
+        "
+      >
         <pre
           className="lock-art"
           style="
             color: lightgray;
-            position: absolute;
             left: 49.7%;
             top: 50.2%;
             transform: translateX(-50%);
             position: absolute;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            display: flex; flex-direction: column; justify-content: flex-end;
           "
         >
 
@@ -453,7 +465,9 @@
          |_|_|_\___/\_/|_\___|_||_|_|\__\___|    |_________________|
 
         </pre>
-        <div class="box">
+        <div class="box" style="margin: 0; /* padding: 0; */ line-height: 1; display: flex;
+        flex-direction: column;
+        justify-content: flex-start; position: relative; top: 109px !important;">
           <div id="load">
             <p class="spinner"></p>
             <p>Loading...</p>

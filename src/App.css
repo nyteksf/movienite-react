@@ -19,11 +19,12 @@
 }
 
 .container {
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   align-items: center;
   justify-content: center; /* Centers everything vertically */
-  height: 100vh; /* Full viewport height */
+  height: 400px; /* Full viewport height */
+  display: none;
 }
 
 .lock-art,
