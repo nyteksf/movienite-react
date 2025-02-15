@@ -22,12 +22,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem; /* Adjust the gap as needed */
-  height: 100vh; /* Ensure the container takes full viewport height */
+  justify-content: center; /* Centers everything vertically */
+  height: 100vh; /* Full viewport height */
+}
+
+.lock-art,
+.box {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
 }
 
 .lock-art {
-  /* Optional: Adjust the margin to control spacing */
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Pushes content downward */
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Pushes content upward */
 }
