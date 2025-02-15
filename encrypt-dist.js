@@ -1,3 +1,4 @@
+/*
 import * as pagecrypt from "pagecrypt";
 import fs from "fs";
 import path from "path";
@@ -68,3 +69,4 @@ main().catch(error => {
   console.error("❌ Top-level error:", error);
   process.exit(1);
 });
+*/
