@@ -194,6 +194,7 @@
       async function R(r) {
         return new Promise((e) => setTimeout(e, r));
       }
+      /*
       async function U() {
         (v.lastElementChild.innerText = "Decrypting..."),
           w(m),
@@ -217,6 +218,35 @@
             d.focus();
         }
       }
+        */
+
+      async function U() {
+        v.lastElementChild.innerText = "Decrypting...";
+        w(m);
+        w(g);
+        x(v);
+        await R(60);
+        try {
+          const r = await V(
+            { salt: N, iv: D, ciphertext: M, iterations: T },
+            d.value
+          );
+          console.log("Decrypted content length:", r.length);
+          console.log("First 100 chars:", r.substring(0, 100));
+          document.write(r);
+          document.close();
+        } catch (r) {
+          w(v);
+          x(g);
+          m.classList.replace("hidden", "flex");
+          sessionStorage.k
+            ? sessionStorage.removeItem("k")
+            : S("Wrong password.");
+          d.value = "";
+          d.focus();
+        }
+      }
+
       async function q(r, e, t) {
         const c = new TextEncoder(),
           s = await p.importKey("raw", c.encode(e), "PBKDF2", !1, [
