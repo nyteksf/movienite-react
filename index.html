@@ -231,31 +231,10 @@
             { salt: N, iv: D, ciphertext: M, iterations: T },
             d.value
           );
-
-          // Parse the decrypted HTML
-          const parser = new DOMParser();
-          const newDoc = parser.parseFromString(r, "text/html");
-
-          // Keep the current script
-          const currentScript = document.currentScript;
-
-          // Replace the entire <html> content except our current script
-          document.documentElement.innerHTML = newDoc.documentElement.innerHTML;
-
-          // If our script was removed, add it back
-          if (currentScript && !document.contains(currentScript)) {
-            document.body.appendChild(currentScript);
-          }
-
-          // Execute any scripts in the new content
-          newDoc.querySelectorAll("script").forEach((script) => {
-            const newScript = document.createElement("script");
-            Array.from(script.attributes).forEach((attr) => {
-              newScript.setAttribute(attr.name, attr.value);
-            });
-            newScript.textContent = script.textContent;
-            document.body.appendChild(newScript);
-          });
+          // Store decrypted content in sessionStorage
+          sessionStorage.setItem("decryptedContent", r);
+          // Reload the page
+          window.location.reload();
         } catch (r) {
           w(v);
           x(g);
@@ -267,6 +246,17 @@
           d.focus();
         }
       }
+
+      // Add this at the start of your script
+      document.addEventListener("DOMContentLoaded", () => {
+        const decryptedContent = sessionStorage.getItem("decryptedContent");
+        if (decryptedContent) {
+          document.open();
+          document.write(decryptedContent);
+          document.close();
+          sessionStorage.removeItem("decryptedContent");
+        }
+      });
 
       async function q(r, e, t) {
         const c = new TextEncoder(),
