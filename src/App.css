@@ -48,3 +48,8 @@
 .box {
   justify-content: flex-start;
 }
+
+input[type="submit"]:hover {
+  background-color: gray;
+  transition: all 250ms ease-in-out;
+}
