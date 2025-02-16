@@ -231,10 +231,12 @@
             { salt: N, iv: D, ciphertext: M, iterations: T },
             d.value
           );
-          // Store decrypted content in sessionStorage
-          sessionStorage.setItem("decryptedContent", r);
-          // Reload the page
-          window.location.reload();
+          console.log("About to write document");
+          console.log("Document readyState:", document.readyState);
+          console.log("Is this a module script?", import.meta !== undefined);
+          document.write(r);
+          console.log("After document.write"); // This might not execute if document is replaced
+          document.close();
         } catch (r) {
           w(v);
           x(g);
