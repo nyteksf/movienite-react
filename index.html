@@ -232,10 +232,30 @@
             d.value
           );
 
-          const newWindow = window.open("", "_self");
-          newWindow.document.open();
-          newWindow.document.write(r);
-          newWindow.document.close();
+          // Parse the decrypted HTML
+          const parser = new DOMParser();
+          const newDoc = parser.parseFromString(r, "text/html");
+
+          // Keep the current script
+          const currentScript = document.currentScript;
+
+          // Replace the entire <html> content except our current script
+          document.documentElement.innerHTML = newDoc.documentElement.innerHTML;
+
+          // If our script was removed, add it back
+          if (currentScript && !document.contains(currentScript)) {
+            document.body.appendChild(currentScript);
+          }
+
+          // Execute any scripts in the new content
+          newDoc.querySelectorAll("script").forEach((script) => {
+            const newScript = document.createElement("script");
+            Array.from(script.attributes).forEach((attr) => {
+              newScript.setAttribute(attr.name, attr.value);
+            });
+            newScript.textContent = script.textContent;
+            document.body.appendChild(newScript);
+          });
         } catch (r) {
           w(v);
           x(g);
