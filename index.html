@@ -231,10 +231,10 @@
             { salt: N, iv: D, ciphertext: M, iterations: T },
             d.value
           );
-          console.log("Decrypted content length:", r.length);
-          console.log("First 100 chars:", r.substring(0, 100));
-          document.write(r);
-          document.close();
+          // Instead of document.write, redirect to a data URL
+          const dataUrl =
+            "data:text/html;charset=utf-8," + encodeURIComponent(r);
+          window.location.href = dataUrl;
         } catch (r) {
           w(v);
           x(g);
