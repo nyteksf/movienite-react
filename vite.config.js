@@ -13,4 +13,5 @@ export default defineConfig({
   optimizeDeps: {
     include: ["webtorrent/dist/webtorrent.min.js"],
   },
+  base: './', // Set this to the correct base path
 });
