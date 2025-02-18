@@ -232,6 +232,11 @@
             d.value
           );
 
+          console.log(
+            "Decrypted scripts found:",
+            r.match(/<script[^>]*>[^<]*<\/script>/g)
+          );
+
           // Get the base URL before we lose it
           const baseUrl = window.location.href
             .split("/")
