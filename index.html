@@ -231,12 +231,23 @@
             { salt: N, iv: D, ciphertext: M, iterations: T },
             d.value
           );
-          console.log("About to write document");
-          console.log("Document readyState:", document.readyState);
-          console.log("Is this a module script?", import.meta !== undefined);
-          document.write(r);
-          console.log("After document.write"); // This might not execute if document is replaced
-          document.close();
+
+          // Create a new non-module script to handle the document.write
+          const script = document.createElement("script");
+          script.textContent = `
+      document.open();
+      document.write(${JSON.stringify(r)});
+      document.close();
+    `;
+
+          // Remove the type="module" from our current script if it exists
+          const currentScript = document.currentScript;
+          if (currentScript) {
+            currentScript.removeAttribute("type");
+          }
+
+          // Execute our non-module script
+          document.body.appendChild(script);
         } catch (r) {
           w(v);
           x(g);
