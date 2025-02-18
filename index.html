@@ -232,22 +232,21 @@
             d.value
           );
 
-          // Create a new non-module script to handle the document.write
-          const script = document.createElement("script");
-          script.textContent = `
-      document.open();
-      document.write(${JSON.stringify(r)});
-      document.close();
-    `;
+          // Get the base URL before we lose it
+          const baseUrl = window.location.href
+            .split("/")
+            .slice(0, -1)
+            .join("/");
 
-          // Remove the type="module" from our current script if it exists
-          const currentScript = document.currentScript;
-          if (currentScript) {
-            currentScript.removeAttribute("type");
-          }
+          // Fix relative paths in the content
+          let fixedContent = r.replace(
+            /(src|href)="\.\/([^"]+)"/g,
+            (match, attr, path) => `${attr}="${baseUrl}/${path}"`
+          );
 
-          // Execute our non-module script
-          document.body.appendChild(script);
+          document.open();
+          document.write(fixedContent);
+          document.close();
         } catch (r) {
           w(v);
           x(g);
