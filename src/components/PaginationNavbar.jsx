@@ -1,4 +1,4 @@
-import "./pagination-navbar.css";
+import "@/components/pagination-navbar.css";
 
 const PaginationNavbar = ({ pageNum, setPageNum, loading }) => {
   const handlePageChange = (newPage) => {
