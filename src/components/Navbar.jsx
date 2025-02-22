@@ -5,7 +5,11 @@ import { faCompass } from "@fortawesome/free-solid-svg-icons";
 
 import { Bars, Compass, Search, XMark } from "@/components/Icons";
 import { cn } from "@/lib/utils";
-import "@/components/navbar.css";
+import "./navbar.css"; /* CHANGED FROM "@/components/..." */
+
+
+/* NEXT I NEED TO TRY TO RECOMPILE WHOLE PROJECT W/ ORIGINAL UNENCRYPTED INDEX.HTML, THEN RUN 'NPM RUN BUILD' AGAIN TO SEE IF THAT FIXES ISSUE W/ NOT FINDING navbar.css IN VERCEL (eg: [vite:load-fallback] Could not load /vercel/path0/src/components/navbar.css (imported by src/components/Navbar.jsx): ENOENT: no such file or directory, open '/vercel/path0/src/components/navbar.css'
+) */
 
 const Navbar = ({
   variant = "default",
@@ -55,12 +59,12 @@ const Navbar = ({
 
   const openNavMenu = () => {
     // ToDo: ADD MOBILE NAV
-    console.log(1)
+    console.log(1);
   };
 
   const closeNavMenu = () => {
     // ToDo: ADD MOBILE NAV
-    console.log(0)
+    console.log(0);
   };
 
   return (
