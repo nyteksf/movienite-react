@@ -15,6 +15,8 @@ async function main() {
   console.log("🔹 Available pagecrypt methods:", Object.keys(pagecrypt));
   
   const htmlFilePath = path.join(distDir, "index.html");
+
+  console.log("htmlFilePath: ", htmlFilePath)
   
   try {
     // Read the HTML content
